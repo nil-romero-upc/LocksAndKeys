@@ -1,6 +1,6 @@
 Algoritme,Mapa,Trobat,Longitud,NodesExplorats,NodesTallats,MemoriaPic,TempsMs
 BFS,mapA,NO),-,0,0,0,1
-DFS,mapA,NO),-,0,0,0,1
+DFS,mapA,NO),-,0,0,0,0
 IDS,mapA,NO),-,0,0,0,0
 A* Basica,mapA,NO),-,0,0,0,0
 A* Avancada,mapA,NO),-,0,0,0,0
@@ -18,4 +18,4 @@ BFS,mapD,NO),-,0,0,0,0
 DFS,mapD,NO),-,0,0,0,0
 IDS,mapD,NO),-,0,0,0,0
 A* Basica,mapD,NO),-,0,0,0,0
-A* Avancada,mapD,NO),-,0,0,0,1
+A* Avancada,mapD,NO),-,0,0,0,0

@@ -13,6 +13,9 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        
+        // kk canvi
+        
         Mapa mapaA = new Mapa(Path.of("src/main/resources/mapA.map"));
         Mapa mapaB = new Mapa(Path.of("src/main/resources/mapB.map"));
         Mapa mapaC = new Mapa(Path.of("src/main/resources/mapC.map"));
