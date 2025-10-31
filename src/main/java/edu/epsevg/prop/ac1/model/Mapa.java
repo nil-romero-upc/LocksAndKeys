@@ -48,6 +48,8 @@ public class Mapa {
         this.agents = new ArrayList<>();
         this.clausMask = 0;
         
+        HashMap<Integer, Posicio> posicioAgent = new HashMap<>();
+        
         sortida = null;
         
         for (int i = 0; i < n; i++) {
@@ -61,7 +63,8 @@ public class Mapa {
                     default:
                         if (Character.isDigit(c)) {
                             // posem l'agent, però __NO__ es situa a la graella
-                            agents.add(new Posicio(i, j));
+                            //agents.add(new Posicio(i, j));
+                            posicioAgent.put(c-'0', new Posicio(i, j));
                             grid[i][j] = ESPAI;
                         } else if (Character.isLowerCase(c)) {
                             grid[i][j] = c; // desem directament la lletra
@@ -73,6 +76,12 @@ public class Mapa {
                 }
             }
         }
+        for(int i=1;i<=posicioAgent.size();i++) {
+            Posicio p = posicioAgent.get(i);
+            if(p==null) throw new RuntimeException("Mapa no vàlid: id's d'agents han de ser correlatius i començar per 1.");
+            agents.add(p);
+        }
+        
         if(sortida==null) throw new RuntimeException("Sortida no definida.");
         if(agents.size()==0) throw new RuntimeException("Agents no definits.");
     }
@@ -90,6 +99,7 @@ public class Mapa {
         this.agents = new ArrayList<>();
         for (Posicio p : other.agents) this.agents.add(new Posicio(p.x, p.y));
         this.clausMask = other.clausMask;
+        this.sortida = other.sortida; // LINIA AFEGIDA !
     }
 
     /**
@@ -210,6 +220,25 @@ public class Mapa {
         // ===============================================
         //@TODO: A IMPLEMENTAR !!!!!!
         // ===============================================
+        for ( int i = 0; i < agents.size(); i++ ) {
+            Posicio agent = agents.get(i-1);
+            int amunt = this.getCell(agent.translate(Direccio.AMUNT));
+            int avall = this.getCell(agent.translate(Direccio.AVALL));
+            int dreta = this.getCell(agent.translate(Direccio.DRETA));
+            int esquerra = this.getCell(agent.translate(Direccio.ESQUERRA));
+        
+            /*
+             *  - PARET = -1
+                *  - ESPAI = 0
+                *  - SORTIDA = -2
+                *  - claus: ascii 'a'..'z' (valors positius > 0)
+                *  - portes: ascii 'A'..'Z' (valors positius > 0)
+                */
+            if (amunt > 0 || amunt = -2) {
+                
+            }  
+        }
+        
         return res;
     }
 
