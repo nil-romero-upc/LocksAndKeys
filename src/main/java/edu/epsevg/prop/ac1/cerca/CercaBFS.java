@@ -3,7 +3,9 @@ package edu.epsevg.prop.ac1.cerca;
 import edu.epsevg.prop.ac1.model.*;
 import edu.epsevg.prop.ac1.resultat.ResultatCerca;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 public class CercaBFS extends Cerca {
@@ -14,7 +16,7 @@ public class CercaBFS extends Cerca {
         Node Na = null;
         Queue<Node> LNO = new LinkedList<>();
         //List<Node> LF = new ArrayList<>();
-        //List<Node> LNT = new ArrayList<>();
+        Map<Mapa,Integer> LNT = new HashMap<>();
         
         LNO.add(new Node(inicial,null,null,0,0));
         boolean sortida = false;

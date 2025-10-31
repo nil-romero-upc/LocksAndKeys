@@ -220,8 +220,8 @@ public class Mapa {
         // ===============================================
         //@TODO: A IMPLEMENTAR !!!!!!
         // ===============================================
-        for ( int i = 0; i < agents.size(); i++ ) {
-            Posicio agent = agents.get(i-1);
+        for ( int id = 0; id < agents.size(); id++ ) {
+            Posicio agent = agents.get(id-1);
             int amunt = this.getCell(agent.translate(Direccio.AMUNT));
             int avall = this.getCell(agent.translate(Direccio.AVALL));
             int dreta = this.getCell(agent.translate(Direccio.DRETA));
@@ -229,14 +229,20 @@ public class Mapa {
         
             /*
              *  - PARET = -1
-                *  - ESPAI = 0
-                *  - SORTIDA = -2
-                *  - claus: ascii 'a'..'z' (valors positius > 0)
-                *  - portes: ascii 'A'..'Z' (valors positius > 0)
-                */
-            if (amunt > 0 || amunt = -2) {
-                
-            }  
+             *  - ESPAI = 0
+             *  - SORTIDA = -2
+             *  - claus: ascii 'a'..'z' (valors positius > 0)
+             *  - portes: ascii 'A'..'Z' (valors positius > 0)
+             */
+            if (esMovimentValid(amunt)) 
+                res.add(new Moviment(id,Direccio.AMUNT,(amunt >= 'a' && amunt <= 'z')? true : false));
+            if (esMovimentValid(avall))
+                res.add(new Moviment(id,Direccio.AVALL,(avall >= 'a' && avall <= 'z')? true : false));
+            if (esMovimentValid(dreta))
+                res.add(new Moviment(id,Direccio.DRETA,(dreta >= 'a' && dreta <= 'z')? true : false));
+            if (esMovimentValid(esquerra))
+                res.add(new Moviment(id,Direccio.ESQUERRA,(esquerra >= 'a' && esquerra <= 'z')? true : false));
+
         }
         
         return res;
@@ -292,5 +298,7 @@ public class Mapa {
     //===================================================================
     
     //@TODO: (opcionalment) el que cregueu convenient per ampliar la classe.
-
+    private boolean esMovimentValid(int cell) {
+        return false;
+    };
 }
