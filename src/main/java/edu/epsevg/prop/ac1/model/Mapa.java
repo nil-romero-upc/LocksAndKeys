@@ -227,13 +227,6 @@ public class Mapa {
             int dreta = this.getCell(agent.translate(Direccio.DRETA));
             int esquerra = this.getCell(agent.translate(Direccio.ESQUERRA));
         
-            /*
-             *  - PARET = -1
-             *  - ESPAI = 0
-             *  - SORTIDA = -2
-             *  - claus: ascii 'a'..'z' (valors positius > 0)
-             *  - portes: ascii 'A'..'Z' (valors positius > 0)
-             */
             if (esMovimentValid(amunt)) 
                 res.add(new Moviment(id,Direccio.AMUNT,(amunt >= 'a' && amunt <= 'z')? true : false));
             if (esMovimentValid(avall))
@@ -299,6 +292,29 @@ public class Mapa {
     
     //@TODO: (opcionalment) el que cregueu convenient per ampliar la classe.
     private boolean esMovimentValid(int cell) {
-        return false;
+        /*
+         *  - PARET = -1
+         *  - ESPAI = 0
+         *  - SORTIDA = -2
+         *  - claus: ascii 'a'..'z' (valors positius > 0)
+         *  - portes: ascii 'A'..'Z' (valors positius > 0)
+         */
+        boolean valid = false;
+        switch (cell) {
+                case -1: valid = false; break;
+                case 0: valid = true; break;
+                case -2: valid = true; break;
+                default: {
+                    if (cell >= 'a' && cell <= 'z') valid = true;
+                    else if (cell >= 'A' && cell <= 'Z') {
+                        char cell_char = (char) cell;
+                        valid = teClau(Character.toLowerCase(cell_char));
+                        //valid = teClau(cell_char+32)
+                    }
+                    else valid = false;
+                    
+                };
+        }
+        return valid;
     };
 }
