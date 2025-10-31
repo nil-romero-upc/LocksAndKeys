@@ -257,7 +257,20 @@ public class Mapa {
         // ===============================================
         //@TODO: A IMPLEMENTAR !!!!!!
         // ===============================================
+
+        if (this == o) return true;
         
+        if (!(o instanceof Mapa)) return false;
+
+        Mapa other = (Mapa) o;
+
+        if (this.clausMask != other.clausMask) return false;
+        if (this.agents.size() != other.agents.size()) return false;
+
+        for (int i = 0; i < agents.size(); i++) {
+            if (!this.agents.get(i).equals(other.agents.get(i)))
+                return false;
+        }
         return true;
     }
 
