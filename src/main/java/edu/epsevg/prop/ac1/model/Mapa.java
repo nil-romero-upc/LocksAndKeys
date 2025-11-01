@@ -285,8 +285,12 @@ public class Mapa {
         // ===============================================
         //@TODO: A IMPLEMENTAR !!!!!!
         // ===============================================
-        
-        return 0;
+
+        int hash = clausMask;
+        for (Posicio p : agents) {
+            hash = 31 * hash + p.hashCode();
+        }
+        return hash;        
     }
 
     @Override
