@@ -12,6 +12,7 @@ import java.util.Queue;
 public class CercaBFS extends Cerca {
     public CercaBFS(boolean usarLNT) { super(usarLNT); }
 
+    /*
     @Override
     public void ferCerca(Mapa inicial, ResultatCerca rc) {
         Node Na = null;
@@ -31,10 +32,9 @@ public class CercaBFS extends Cerca {
                 //LF.add();
             }
         }
-    }
+    }*/
 
-    /*
-     * @Override
+    @Override
     public void ferCerca(Mapa inicial, ResultatCerca rc) {
         Queue<Node> LNO = new LinkedList<>();       // Nodes oberts
         Map<Mapa, Integer> LNT = new HashMap<>();   // Nodes tancats
@@ -95,6 +95,6 @@ public class CercaBFS extends Cerca {
             rc.setCami(null); // sense solució
         }
     }
-     */
+    
    
 }

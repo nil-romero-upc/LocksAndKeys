@@ -220,7 +220,7 @@ public class Mapa {
         // ===============================================
         //@TODO: A IMPLEMENTAR !!!!!!
         // ===============================================
-        for ( int id = 0; id < agents.size(); id++ ) {
+        /*for ( int id = 0; id < agents.size(); id++ ) {
             Posicio agent = agents.get(id-1);
             int amunt = this.getCell(agent.translate(Direccio.AMUNT));
             int avall = this.getCell(agent.translate(Direccio.AVALL));
@@ -238,6 +238,42 @@ public class Mapa {
 
         }
         
+        return res;*/
+
+        // Per cada agent (id de 1 a N)
+        for (int i = 0; i < agents.size(); i++) {
+            Posicio agent = agents.get(i);
+            int agentId = i + 1;  // agents estan indexats des de 0, però id comença en 1
+
+            // Provar totes les direccions
+            for (Direccio d : Direccio.values()) {
+                Posicio dest = agent.translate(d);
+                int cell = getCell(dest);
+
+                // Saltem si és una paret o fora del mapa
+                if (cell == PARET) continue;
+
+                // Si és una porta i no tenim la clau -> no podem passar
+                if (Character.isUpperCase(cell) && !portaObrible((char) cell)) continue;
+
+                // Comprovem si hi ha col·lisió amb un altre agent
+                boolean colisio = false;
+                for (int j = 0; j < agents.size(); j++) {
+                    if (j == i) continue;
+                    if (agents.get(j).equals(dest)) {
+                        colisio = true;
+                        break;
+                    }
+                }
+                if (colisio) continue;
+
+                // Determinem si recollim una clau
+                boolean recullClau = (Character.isLowerCase(cell) && !teClau((char) cell));
+
+                // Afegim moviment vàlid
+                res.add(new Moviment(agentId, d, recullClau));
+            }
+        }
         return res;
     }
 
