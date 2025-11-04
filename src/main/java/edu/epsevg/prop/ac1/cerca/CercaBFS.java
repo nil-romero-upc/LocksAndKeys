@@ -12,28 +12,6 @@ import java.util.Queue;
 public class CercaBFS extends Cerca {
     public CercaBFS(boolean usarLNT) { super(usarLNT); }
 
-    /*
-    @Override
-    public void ferCerca(Mapa inicial, ResultatCerca rc) {
-        Node Na = null;
-        Queue<Node> LNO = new LinkedList<>();
-        List<Node> LF = new ArrayList<>();
-        HashMap<Mapa,Integer> LNT = new HashMap<>();
-        
-        LNO.add(new Node(inicial,null,null,0,0));
-        boolean sortida = false;
-
-        while ( !(LNO.isEmpty() || sortida) ) {
-            Na = LNO.poll();
-            if (Na.estat.esMeta());
-            LNT.put(Na.estat,Na.depth);
-            LF.clear();
-            for( Moviment mov : Na.estat.getAccionsPossibles() ) {
-                //LF.add();
-            }
-        }
-    }*/
-
     @Override
     public void ferCerca(Mapa inicial, ResultatCerca rc) {
         Queue<Node> LNO = new LinkedList<>();       // Nodes oberts
@@ -90,7 +68,7 @@ public class CercaBFS extends Cerca {
                 cami.addFirst(node.accio);
                 node = node.pare;
             }
-        rc.setCami(cami);
+            rc.setCami(cami);
         } else {
             rc.setCami(null); // sense solució
         }
