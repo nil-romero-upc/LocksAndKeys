@@ -14,65 +14,46 @@ public class CercaBFS extends Cerca {
 
     @Override
     public void ferCerca(Mapa inicial, ResultatCerca rc) {
-        Queue<Node> LNO = new LinkedList<>();       // Nodes oberts
-        Map<Mapa, Integer> LNT = new HashMap<>();   // Nodes tancats
-
-        Node inicialNode = new Node(inicial, null, null, 0, 0);
-        LNO.add(inicialNode);
-
-        Node actual = null;
-        boolean trobat = false;
-
         rc.startTime();
 
-        while (!LNO.isEmpty() && !trobat) {
-            actual = LNO.poll();
+        // --- Inicialitzacions ---
+        Queue<Node> LNO = new LinkedList<>();   // Llista de Nodes Oberts (FIFO)
+        ControlCicles cc = new ControlCicles(usarLNT); // Control de cicles
+
+        // Afegim el node inicial
+        Node arrel = new Node(inicial, null, null, 0, 0);
+        LNO.add(arrel);
+
+        // --- Bucle principal ---
+        while (!LNO.isEmpty()) {
+            Node actual = LNO.poll(); // extreure el primer (nivell més antic)
             rc.incNodesExplorats();
 
-            // Actualitzar ús de memòria (nombre total de nodes en memòria)
-            rc.updateMemoria(LNO.size() + LNT.size());
-
-            // Comprovar si és estat meta
+            // Comprovem si hem arribat a la meta
             if (actual.estat.esMeta()) {
-                trobat = true;
-                break;
+                rc.setCami(Cerca.reconstruirCami(actual));
+                rc.stopTime();
+                return;
             }
 
-            // Evitar repetir estats
-            if (LNT.containsKey(actual.estat)) continue;
-            LNT.put(actual.estat, actual.depth);
-
-            // Generar successors
+            // Generem successors
             for (Moviment mov : actual.estat.getAccionsPossibles()) {
-                try {
-                    Mapa nouEstat = actual.estat.mou(mov);
-                    if (!LNT.containsKey(nouEstat)) {
-                        Node fill = new Node(nouEstat, actual, mov, actual.depth + 1, 0);
-                        LNO.add(fill);
-                    }
-                } catch (Exception e) {
-                    // Moviment invàlid → no cal fer res
-                    rc.incNodesTallats();
+                Mapa nouEstat = actual.estat.mou(mov);
+                Node successor = new Node(nouEstat, actual, mov, actual.depth + 1, actual.g + 1);
+
+                // Evitem estats repetits segons la política de cicles
+                if (!cc.esRepetit(actual, nouEstat, successor.depth)) {
+                    LNO.add(successor);
+                } else {
+                    rc.incNodesTallats(); // comptem com a node tallat
                 }
             }
+
+            // Actualitzem memòria màxima usada
+            rc.updateMemoria(LNO.size() + cc.mida());
         }
 
+        // Si arribem aquí, no hi ha solució
         rc.stopTime();
-
-        // Informar del resultat
-        if (trobat) {
-            // reconstruir el camí manualment
-            LinkedList<Moviment> cami = new LinkedList<>();
-            Node node = actual;
-            while (node != null && node.accio != null) {
-                cami.addFirst(node.accio);
-                node = node.pare;
-            }
-            rc.setCami(cami);
-        } else {
-            rc.setCami(null); // sense solució
-        }
     }
-    
-   
 }
