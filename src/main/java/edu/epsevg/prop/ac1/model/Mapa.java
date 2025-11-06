@@ -220,25 +220,6 @@ public class Mapa {
         // ===============================================
         //@TODO: A IMPLEMENTAR !!!!!!
         // ===============================================
-        /*for ( int id = 0; id < agents.size(); id++ ) {
-            Posicio agent = agents.get(id-1);
-            int amunt = this.getCell(agent.translate(Direccio.AMUNT));
-            int avall = this.getCell(agent.translate(Direccio.AVALL));
-            int dreta = this.getCell(agent.translate(Direccio.DRETA));
-            int esquerra = this.getCell(agent.translate(Direccio.ESQUERRA));
-        
-            if (esMovimentValid(amunt)) 
-                res.add(new Moviment(id,Direccio.AMUNT,(amunt >= 'a' && amunt <= 'z')? true : false));
-            if (esMovimentValid(avall))
-                res.add(new Moviment(id,Direccio.AVALL,(avall >= 'a' && avall <= 'z')? true : false));
-            if (esMovimentValid(dreta))
-                res.add(new Moviment(id,Direccio.DRETA,(dreta >= 'a' && dreta <= 'z')? true : false));
-            if (esMovimentValid(esquerra))
-                res.add(new Moviment(id,Direccio.ESQUERRA,(esquerra >= 'a' && esquerra <= 'z')? true : false));
-
-        }
-        
-        return res;*/
 
         // Per cada agent (id de 1 a N)
         for (int i = 0; i < agents.size(); i++) {

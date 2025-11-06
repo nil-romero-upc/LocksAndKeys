@@ -1,21 +1,21 @@
 Algoritme,Mapa,Trobat,Longitud,NodesExplorats,NodesTallats,MemoriaPic,TempsMs
-BFS,mapA,NO),-,0,0,0,1
-DFS,mapA,NO),-,0,0,0,0
-IDS,mapA,NO),-,0,0,0,0
+BFS,mapA,YES,5,312,0,334,28
+DFS,mapA,YES,104,108,229,345,6
+IDS,mapA,YES,6,558,448,90,6
 A* Basica,mapA,NO),-,0,0,0,0
 A* Avancada,mapA,NO),-,0,0,0,0
-BFS,mapB,NO),-,0,0,0,0
-DFS,mapB,NO),-,0,0,0,0
-IDS,mapB,NO),-,0,0,0,0
+BFS,mapB,YES,31,231,0,184,4
+DFS,mapB,YES,53,81,96,109,2
+IDS,mapB,YES,41,8919,5439,215,56
 A* Basica,mapB,NO),-,0,0,0,0
-A* Avancada,mapB,NO),-,0,0,0,0
-BFS,mapC,NO),-,0,0,0,0
-DFS,mapC,NO),-,0,0,0,0
-IDS,mapC,NO),-,0,0,0,0
+A* Avancada,mapB,NO),-,0,0,0,1
+BFS,mapC,YES,37,32525,0,14489,221
+DFS,mapC,YES,242,253,444,755,5
+IDS,mapC,YES,94,450767,362800,5538,843
 A* Basica,mapC,NO),-,0,0,0,0
-A* Avancada,mapC,NO),-,0,0,0,0
-BFS,mapD,NO),-,0,0,0,0
-DFS,mapD,NO),-,0,0,0,0
-IDS,mapD,NO),-,0,0,0,0
+A* Avancada,mapC,NO),-,0,0,0,1
+BFS,mapD,YES,79,406889,0,118094,3332
+DFS,mapD,YES,29964,46269,130044,121578,797
+IDS,mapD,YES,1225,188163229,162019047,104541,343982
 A* Basica,mapD,NO),-,0,0,0,0
-A* Avancada,mapD,NO),-,0,0,0,0
+A* Avancada,mapD,NO),-,0,0,0,1
