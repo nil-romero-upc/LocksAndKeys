@@ -21,69 +21,59 @@ public class CercaAStar extends Cerca {
 
     @Override
     public  void ferCerca(Mapa inicial, ResultatCerca rc) {
-         rc.startTime();
+        rc.startTime();
 
-        // Definim LNO (frontera): PriorityQueue ordenada per f = g + h
-        PriorityQueue<Node> LNO = new PriorityQueue<>(
-            Comparator.comparingInt(n -> n.g + heur.h(n.estat))
-        );
+        // Control de cicles (segons usarLNT)
+        ControlCicles cc = new ControlCicles(usarLNT);
 
-        // LNT: map per registrar el cost més baix trobat per a cada estat
-        HashMap<Mapa, Integer> LNT = new HashMap<>();
+        // LNO: PriorityQueue ordenada per f(n) = g(n) + h(n)
+        PriorityQueue<Node> LNO = new PriorityQueue<>(Comparator.comparingInt(n -> n.g + heur.h(n.estat)));
 
-        // Node inicial
-        Node inicialNode = new Node(inicial, null, null, 0, 0);
-        LNO.add(inicialNode);
-        LNT.put(inicial, 0);
+        // Node arrel
+        Node arrel = new Node(inicial, null, null, 0, 0);
+        LNO.add(arrel);
+        cc.esRepetit(null, inicial, 0);
 
-        Node solucio = null;
         boolean trobat = false;
+        Node actual = null;
 
-        // Bucle principal de cerca
-        while (!LNO.isEmpty() && !trobat) {
-            Node actual = LNO.poll();
+        while (!LNO.isEmpty()) {
+            actual = LNO.poll(); // node amb menor f = g + h
             rc.incNodesExplorats();
 
-            // Si hem arribat a la meta
+            // Si arribem a la meta, reconstruïm camí
             if (actual.estat.esMeta()) {
-                solucio = actual;
                 trobat = true;
                 break;
             }
 
-            // Generar successors
+            // Expansió de successors
             for (Moviment mov : actual.estat.getAccionsPossibles()) {
-                Mapa nouEstat = actual.estat.mou(mov);
-                int nouCost = actual.g + 1; // cada moviment costa 1
+                try {
+                    Mapa nouEstat = actual.estat.mou(mov);
+                    Node successor = new Node(nouEstat, actual, mov, actual.depth + 1, actual.g + 1);
 
-                // Si no l’hem vist mai o hem trobat un camí millor
-                if (!LNT.containsKey(nouEstat) || nouCost < LNT.get(nouEstat)) {
-                    LNT.put(nouEstat, nouCost);
-                    Node fill = new Node(nouEstat, actual, mov, actual.depth + 1, nouCost);
-                    LNO.add(fill);
-                } else {
+                    if (!cc.esRepetit(actual, nouEstat, successor.depth)) {
+                        LNO.add(successor);
+                    } else {
+                        rc.incNodesTallats();
+                    }
+                } catch (Exception e) {
+                    // Moviment no vàlid (mur, porta tancada, col·lisió)
                     rc.incNodesTallats();
                 }
             }
 
-            rc.updateMemoria(LNO.size() + LNT.size());
+            rc.updateMemoria(LNO.size() + cc.mida());
         }
 
         rc.stopTime();
 
-        // Reconstruir el camí si trobem solució
-        if (solucio != null) {
-            LinkedList<Moviment> cami = new LinkedList<>();
-            Node node = solucio;
-            while (node != null && node.accio != null) {
-                cami.addFirst(node.accio);
-                node = node.pare;
-            }
-            rc.setCami(cami);
+        // Resultats finals
+        if (trobat) {
+            rc.setCami(reconstruirCami(actual));
         } else {
             rc.setCami(null);
         }
-
     }
-
 }
