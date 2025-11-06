@@ -351,4 +351,25 @@ public class Mapa {
         }
         return valid;
     };
+
+    /**
+    * Retorna la llista de posicions de totes les claus que encara no s’han recollit.
+    * @return Llista de Posicio amb claus pendents.
+    */
+    public List<Posicio> getClausPendents() {
+        List<Posicio> clausPendents = new ArrayList<>();
+    
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                int cell = grid[i][j];
+                if (cell >= 'a' && cell <= 'z') {
+                    char key = (char) cell;
+                    if (!teClau(key)) {
+                        clausPendents.add(new Posicio(i, j));
+                    }
+                }
+            }
+        }
+        return clausPendents;
+    }
 }
