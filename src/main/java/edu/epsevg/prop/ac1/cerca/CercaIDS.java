@@ -5,6 +5,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 import edu.epsevg.prop.ac1.model.*;
 import edu.epsevg.prop.ac1.resultat.ResultatCerca;
@@ -17,80 +18,73 @@ public class CercaIDS extends Cerca {
     public void ferCerca(Mapa inicial, ResultatCerca rc) {
         rc.startTime();
 
-        boolean trobat = false;
-        Node solucio = null;
-        int limit = 0;
+        int limit = 1;              // profunditat inicial
+        boolean trobat = false;     // marca si hem trobat la meta
+        List<Moviment> cami = null; // guardar el camí quan es trobi
 
-        // Bucle principal IDS
+        // Bucle infinit controlat: cada iteració incrementa el límit de profunditat
         while (!trobat) {
-
-            // ------------------------------
-            // LNO: Llista de Nodes Oberts (PILA -> DFS)
-            // ------------------------------
+            // Reiniciem estructures per cada iteració
+            ControlCicles cc = new ControlCicles(usarLNT);
             Deque<Node> LNO = new ArrayDeque<>();
 
-            // ------------------------------
-            // LNT: Llista de Nodes Tancats (HASHSET -> per evitar reexploracions dins la mateixa iteració)
-            // ------------------------------
-            HashSet<Mapa> LNT = new HashSet<>();
+            // Node arrel
+            Node arrel = new Node(inicial, null, null, 0, 0);
+            LNO.addFirst(arrel);
+            cc.esRepetit(null, inicial, 0);
 
-            // Node inicial
-            LNO.push(new Node(inicial, null, null, 0, 0));
+            // Flag per detectar si hi ha hagut algun node tallat
+            boolean haExpandit = false;
 
-            // Cerca en profunditat limitada
-            while (!LNO.isEmpty() && !trobat) {
-                Node actual = LNO.pop(); // LIFO -> treure l’últim node afegit
+            while (!LNO.isEmpty()) {
+                Node actual = LNO.removeFirst();
                 rc.incNodesExplorats();
 
-                // Si ja hem vist aquest estat a aquesta iteració -> saltem
-                if (LNT.contains(actual.estat)) {
-                    rc.incNodesTallats();
-                    continue;
-                }
-                LNT.add(actual.estat);
-
-                // Si hem trobat la meta
+                // Si trobem la meta, sortim
                 if (actual.estat.esMeta()) {
-                    solucio = actual;
+                    cami = Cerca.reconstruirCami(actual);
                     trobat = true;
                     break;
                 }
 
-                // Si arribem al límit -> no expandim més
-                if (actual.depth == limit) {
+                // Si arribem al límit actual de profunditat, no expandim més
+                if (actual.depth >= limit) {
                     rc.incNodesTallats();
                     continue;
                 }
 
-                // Expandeix successors
+                // Expandim successors
                 for (Moviment mov : actual.estat.getAccionsPossibles()) {
                     Mapa nouEstat = actual.estat.mou(mov);
-                    Node fill = new Node(nouEstat, actual, mov, actual.depth + 1, 0);
+                    Node successor = new Node(nouEstat, actual, mov, actual.depth + 1, actual.g + 1);
 
-                    // No cal mirar si ja és a LNT, ja ho fa el check al començar el bucle
-                    LNO.push(fill);
+                    if (!cc.esRepetit(actual, nouEstat, successor.depth)) {
+                        LNO.addFirst(successor);
+                        haExpandit = true;
+                    } else {
+                        rc.incNodesTallats();
+                    }
                 }
 
-                // Actualitza màxim de memòria utilitzada
-                rc.updateMemoria(LNO.size() + LNT.size());
+                rc.updateMemoria(LNO.size() + cc.mida());
             }
 
-            // Si no hem trobat res, augmentem el límit i tornem a començar
-            if (!trobat) {
-                limit++;
+            // Si hem trobat la solució, aturem la cerca
+            if (trobat) break;
+
+            // Si ja no hi ha nodes nous a expandir, la cerca s'ha esgotat
+            if (!haExpandit && LNO.isEmpty()) {
+                break; // No hi ha més nodes possibles: no hi ha solució
             }
+
+            // Incrementem el límit i tornem a començar
+            limit++;
         }
 
         rc.stopTime();
 
-        // Reconstruir el camí de solució
-        if (solucio != null) {
-            LinkedList<Moviment> cami = new LinkedList<>();
-            Node node = solucio;
-            while (node != null && node.accio != null) {
-                cami.addFirst(node.accio);
-                node = node.pare;
-            }
+        // Guardem resultat final
+        if (trobat) {
             rc.setCami(cami);
         } else {
             rc.setCami(null);
