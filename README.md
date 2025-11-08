@@ -76,6 +76,7 @@ Universitat Politècnica de Catalunya (UPC)
 
 ## 🧩 Estructura del projecte
 
+```bash
 src/
 ├── main/
 │ ├── java/edu/epsevg/prop/ac1/
@@ -108,5 +109,6 @@ src/
   ├── IDSTest.java
   └── MapaTest.java
 results.csv # Resultats obtinguts per als diferents Mapes i Cerques
+```
 
 ---
