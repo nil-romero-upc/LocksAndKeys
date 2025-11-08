@@ -13,7 +13,7 @@ El projecte consisteix en implementar diversos **algorismes de cerca** sobre un 
 El mapa defineix:
 - **Agents** (posicions inicials numerades)
 - **Claus (`a`–`z`)** i **portes (`A`–`Z`)**
-- **Parets (`#`)**, **espais buits (` `)** i **sortida (`@`)**
+- **Parets (`#`)**, **espais buits (`·`)** i **sortida (`@`)**
 
 L’objectiu és trobar un **camí vàlid i òptim** des de l’estat inicial fins a la meta, considerant les regles del joc i el cost acumulat dels moviments.
 
