@@ -32,7 +32,7 @@ public class HeuristicaAvancada implements Heuristica {
         int resultat;
 
         if (clausPendents.isEmpty()) {
-            // No queden claus → distància mínima agent→sortida
+            // No queden claus -> distància mínima agent->sortida
             int minDist = Integer.MAX_VALUE;
             for (Posicio a : agents) {
                 int dist = manhattanCached(a, sortida);
@@ -40,11 +40,11 @@ public class HeuristicaAvancada implements Heuristica {
             }
             resultat = minDist;
         } else {
-            // Queden claus → estimem: agent→clau + clau→sortida
+            // Queden claus -> estimem: agent->clau + clau->sortida
             int minAgentClau = Integer.MAX_VALUE;
             int minClauSortida = Integer.MAX_VALUE;
 
-            // distància mínima agent→clau
+            // distància mínima agent->clau
             for (Posicio a : agents) {
                 for (Posicio c : clausPendents) {
                     int dist = manhattanCached(a, c);
@@ -52,13 +52,13 @@ public class HeuristicaAvancada implements Heuristica {
                 }
             }
 
-            // distància mínima clau→sortida
+            // distància mínima clau->sortida
             for (Posicio c : clausPendents) {
                 int dist = manhattanCached(c, sortida);
                 if (dist < minClauSortida) minClauSortida = dist;
             }
 
-            // penalització lleu per claus pendents (millor guia)
+            // penalització lleu per claus pendents
             resultat = minAgentClau + minClauSortida + Math.max(0, clausPendents.size() - 1);
         }
 
