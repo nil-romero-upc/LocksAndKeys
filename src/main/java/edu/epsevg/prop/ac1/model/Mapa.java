@@ -325,32 +325,6 @@ public class Mapa {
     //===================================================================
     
     //@TODO: (opcionalment) el que cregueu convenient per ampliar la classe.
-    private boolean esMovimentValid(int cell) {
-        /*
-         *  - PARET = -1
-         *  - ESPAI = 0
-         *  - SORTIDA = -2
-         *  - claus: ascii 'a'..'z' (valors positius > 0)
-         *  - portes: ascii 'A'..'Z' (valors positius > 0)
-         */
-        boolean valid = false;
-        switch (cell) {
-                case -1: valid = false; break;
-                case 0: valid = true; break;
-                case -2: valid = true; break;
-                default: {
-                    if (cell >= 'a' && cell <= 'z') valid = true;
-                    else if (cell >= 'A' && cell <= 'Z') {
-                        char cell_char = (char) cell;
-                        valid = teClau(Character.toLowerCase(cell_char));
-                        //valid = teClau(cell_char+32)
-                    }
-                    else valid = false;
-                    
-                };
-        }
-        return valid;
-    };
 
     /**
     * Retorna la llista de posicions de totes les claus que encara no s’han recollit.
@@ -371,5 +345,18 @@ public class Mapa {
             }
         }
         return clausPendents;
+    }
+
+    /**
+     * Indica si una cel·la és una paret.
+     * Si està fora dels límits, la considerem paret (no es pot trepitjar).
+     */
+    public boolean esParet(int x, int y) {
+        if (x < 0 || x >= n || y < 0 || y >= m) return true;
+        return grid[x][y] == PARET;
+    }
+
+    public boolean esParet(Posicio p) {
+        return esParet(p.x, p.y);
     }
 }
